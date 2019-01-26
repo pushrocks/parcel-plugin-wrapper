@@ -1,4 +1,5 @@
 import * as plugins from './parcel-plugin-wrapper.plugins';
+import '@gitzone/tsrun';
 
 module.exports = bundler => {
   const readAsset = pathArg => {
@@ -35,7 +36,7 @@ ${footer}`
   bundler.on('bundled', async bundleArg => {
     try {
       const CWD = process.cwd();
-      const processFn = require(plugins.path.join(CWD, '.assetWrapper.js'));
+      const processFn = require(plugins.path.join(CWD, '.assetWrapper.ts'));
       if (processFn && typeof processFn === 'function') {
         await processAsset(bundleArg, processFn);
       }
