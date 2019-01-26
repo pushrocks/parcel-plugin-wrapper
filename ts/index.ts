@@ -1,10 +1,9 @@
-const path = require('path');
-const fs = require('fs');
+import * as plugins from './parcel-plugin-wrapper.plugins';
 
-const mainExport = bundler => {
+module.exports = bundler => {
   const readAsset = pathArg => {
     try {
-      return fs.readFileSync(pathArg, 'utf8');
+      return plugins.fs.readFileSync(pathArg, 'utf8');
     } catch (e) {
       console.error('file is invalid');
       throw e;
@@ -12,7 +11,7 @@ const mainExport = bundler => {
   };
 
   const writeAsset = (name, { header = '', footer = '' }) => {
-    fs.writeFileSync(
+    plugins.fs.writeFileSync(
       name,
       `${header}
 ${readAsset(name)}
@@ -28,17 +27,17 @@ ${footer}`
       writeAsset(name, wrappingCode);
     }
 
-    bundle.childBundles.forEach(function(bundle) {
-      processAsset(bundle, processFn);
+    bundle.childBundles.forEach((bundleArg) => {
+      processAsset(bundleArg, processFn);
     });
   };
 
-  bundler.on('bundled', async bundle => {
+  bundler.on('bundled', async bundleArg => {
     try {
       const CWD = process.cwd();
-      const processFn = require(path.join(CWD, '.assetWrapper.js'));
+      const processFn = require(plugins.path.join(CWD, '.assetWrapper.js'));
       if (processFn && typeof processFn === 'function') {
-        await processAsset(bundle, processFn);
+        await processAsset(bundleArg, processFn);
       }
     } catch (error) {
       console.warn(
@@ -47,5 +46,3 @@ ${footer}`
     }
   });
 };
-
-export default mainExport;
