@@ -1,0 +1,8 @@
+.nogit/
+node_modules/
+coverage/
+public/
+pages/
+.yarn/
+.cache/
+dist/
