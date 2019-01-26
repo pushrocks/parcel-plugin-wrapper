@@ -1,6 +1,6 @@
 {
   "name": "@pushrocks/parcel-plugin-wrapper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "description": "a wrapper for parcel",
   "main": "dist/index.js",
